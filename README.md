@@ -23,3 +23,19 @@ The Braille images are preprocessed to ensure consistent size and normalization.
 
 The trained model is evaluated on a separate test dataset. The evaluation metric used is accuracy, which measures the proportion of correctly translated Braille characters. The model achieves an accuracy of 93.6%, indicating its ability to effectively translate Braille into English.
 
+<p align="center">
+  <b>Model Accuracy</b>
+</p>
+
+<p align="center">
+  <img src="https://github.com/AliElneklawy/braille-translation/blob/main/utils/accuracy.png" alt="Model Accuracy" />
+</p>
+
+<p align="center">
+  <b>Model Loss</b>
+</p>
+
+<p align="center">
+  <img src="https://github.com/AliElneklawy/braille-translation/blob/main/utils/loss.png" alt="Model Loss" />
+</p>
+
