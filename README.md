@@ -23,6 +23,47 @@ The Braille images are preprocessed to ensure consistent size and normalization.
 
 The trained model is evaluated on a separate test dataset. The evaluation metric used is accuracy, which measures the proportion of correctly translated Braille characters. The model achieves an accuracy of 93.6%, indicating its ability to effectively translate Braille into English.
 
+
+
+<div align="center">
+
+### Test Classification Report
+
+| Class | Precision | Recall | F1-Score | Support |
+|-------|-----------|--------|----------|---------|
+|   A   |   0.90    |  1.00  |   0.95   |    9    |
+|   B   |   1.00    |  1.00  |   1.00   |    9    |
+|   C   |   1.00    |  0.78  |   0.88   |    9    |
+|   D   |   0.90    |  1.00  |   0.95   |    9    |
+|   E   |   0.89    |  0.89  |   0.89   |    9    |
+|   F   |   0.82    |  1.00  |   0.90   |    9    |
+|   G   |   1.00    |  1.00  |   1.00   |    9    |
+|   H   |   1.00    |  0.89  |   0.94   |    9    |
+|   I   |   0.80    |  0.89  |   0.84   |    9    |
+|   J   |   1.00    |  1.00  |   1.00   |    9    |
+|   K   |   0.90    |  1.00  |   0.95   |    9    |
+|   L   |   0.90    |  1.00  |   0.95   |    9    |
+|   M   |   1.00    |  1.00  |   1.00   |    9    |
+|   N   |   1.00    |  1.00  |   1.00   |    9    |
+|   O   |   1.00    |  0.89  |   0.94   |    9    |
+|   P   |   1.00    |  0.89  |   0.94   |    9    |
+|   Q   |   1.00    |  1.00  |   1.00   |    9    |
+|   R   |   1.00    |  0.78  |   0.88   |    9    |
+|   S   |   1.00    |  1.00  |   1.00   |    9    |
+|   T   |   0.89    |  0.89  |   0.89   |    9    |
+|   U   |   1.00    |  0.89  |   0.94   |    9    |
+|   V   |   0.90    |  1.00  |   0.95   |    9    |
+|   W   |   1.00    |  0.89  |   0.94   |    9    |
+|   X   |   1.00    |  1.00  |   1.00   |    9    |
+|   Y   |   1.00    |  1.00  |   1.00   |    9    |
+|   Z   |   0.90    |  1.00  |   0.95   |    9    |
+
+Accuracy: 0.95
+
+</div>
+
+
+
 <p align="center">
   <b>Model Accuracy</b>
 </p>
