@@ -1,6 +1,6 @@
 # Braille Translation
 
-This project utilizes transfer learning to develop a deep learning model capable of translating American Braille characters into English characters. The model is built upon the DenseNet201 architecture, with the final layer removed and only the last 20 layers trainable.
+This project utilizes transfer learning to develop a deep learning model capable of translating American Braille characters into English characters. The model is built upon the DenseNet201 architecture, with the final layer removed and only the last 30 layers trainable.
 
 # Project Motivation
 
