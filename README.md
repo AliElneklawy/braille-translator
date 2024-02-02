@@ -8,7 +8,7 @@ Braille is a tactile writing system used by visually impaired individuals. While
 
 # Model Architecture
 
-The proposed model employs the DenseNet201 architecture, a convolutional neural network (CNN) known for its parameter efficiency and ability to handle complex tasks. The original DenseNet201 consists of 201 layers, with the final layer responsible for classification. For this project, the final layer is removed, and only the last 20 layers are trainable. This approach allows the model to leverage the pre-learned features from the original DenseNet201 while adapting to the specific task of Braille translation.
+The proposed model employs the DenseNet201 architecture, a convolutional neural network (CNN) known for its parameter efficiency and ability to handle complex tasks. The original DenseNet201 consists of 201 layers, with the final layer responsible for classification. For this project, the final layer is removed, and only the last 30 layers are trainable. This approach allows the model to leverage the pre-learned features from the original DenseNet201 while adapting to the specific task of Braille translation.
 
 # Data Preparation
 
