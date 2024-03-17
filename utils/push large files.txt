@@ -1,0 +1,13 @@
+Open the target github folder.
+
+git lfs install
+
+git lfs track "*.file_extension"
+
+git lfs push --all origin main
+
+git add .
+
+git commit -m "commit message"
+
+git push -u origin main
