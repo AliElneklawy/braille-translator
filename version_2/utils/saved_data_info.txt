@@ -1,0 +1,3 @@
+Data was saved to a pkl file using:
+- python 3.10.13
+- pickle library version 4.0
