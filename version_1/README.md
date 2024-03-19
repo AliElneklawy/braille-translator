@@ -61,7 +61,7 @@ Accuracy: 0.95
 </p>
 
 <p align="center">
-  <img src="https://github.com/AliElneklawy/braille-translation/blob/main/utils/accuracy.png" alt="Model Accuracy" />
+  <img src="version_1/utils/accuracy.png" alt="Model Accuracy" />
 </p>
 
 <p align="center">
@@ -69,6 +69,6 @@ Accuracy: 0.95
 </p>
 
 <p align="center">
-  <img src="https://github.com/AliElneklawy/braille-translation/blob/main/utils/loss.png" alt="Model Loss" />
+  <img src="version_1/utils/loss.png" alt="Model Loss" />
 </p>
 
