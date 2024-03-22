@@ -17,5 +17,9 @@ This repository hosts our graduation project, focused on the development of a sy
 ## Project Description
 This project aims to bridge the gap between Braille literacy and accessibility through the integration of cutting-edge technologies. Leveraging the power of image processing and deep learning, the system provides a robust solution capable of accurately interpreting Braille characters from scanned images. The system achieved high levels of accuracy in Braille image translation.
 
-Furthermore, the project extends beyond mere text extraction by incorporating a text-to-speech conversion step. By synthesizing the extracted English text into audible speech, the system empowers individuals with visual impairments to access Braille content effortlessly.
+Furthermore, the project extends beyond mere text extraction by incorporating a text-to-speech conversion step. By synthesizing the extracted English text into audible speech, the system empowers individuals with visual impairments to access Braille content effortlessly. The summary of the project is shown in the figure below.
+
+<p align="center">
+  <img src="https://github.com/AliElneklawy/braille-translation/blob/main/utils/project%20description.jpg" alt="Project Description" />
+</p>
 
