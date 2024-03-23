@@ -1,4 +1,4 @@
-# STATUS: IN PROGRESS
+# STATUS: GRADE 1 DONE  
 
 # Team Members  
   - [Ali Elneklawy](https://github.com/AliElneklawy)
