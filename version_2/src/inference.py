@@ -8,6 +8,7 @@ import os
 
 class Inference():
     def __init__(self, model_path, data_path) -> None:
+        
         self.mappings = {'100000': ['a', '1'], '110000': ['b', '2'], '100100': ['c', '3'], 
             '100110': ['d', '4'], '100010': ['e', '5'], '110100': ['f', '6'], 
             '110110': ['g', '7'], '110010': ['h', '8'], '010100': ['i', '9'], 
@@ -32,7 +33,7 @@ class Inference():
         self.model = load_model(self.model_path)
 
 
-    def preprocess(self):       
+    def preprocess(self) -> dict:       
         for im in os.listdir(self.data_path):
             img_path = os.path.join(self.data_path, im)
             im_number = int(im.split('.')[0]) # will be used to sort the images dictionary
@@ -48,35 +49,39 @@ class Inference():
         return data_names_ordered
 
 
-    def predict(self, data_dict) -> str:
+    def predict(self, data_dict: dict) -> list:
         for im_arr in data_dict.values():
             predictions = self.model.predict(im_arr, verbose=0)
             predicted_class_index = np.argmax(predictions)
             predicted_class_label = self.class_names[predicted_class_index]
             self.predictions_arr_zeros_ones.append(predicted_class_label) 
             
-            # Mapping encoded characters to their values in the mappings dict
-            if predicted_class_label in self.mappings:
-                if self.mappings[predicted_class_label] == '#': 
+        return self.predictions_arr_zeros_ones
+    
+
+    def decode(self, encoded_arr: list) -> str: # Mapping encoded characters to their values in the mappings dict
+        for encoded_char in encoded_arr:
+            if encoded_char in self.mappings:
+                if self.mappings[encoded_char] == '#': 
                     self.next_is_num = True
                     num_str = ''
-                elif self.mappings[predicted_class_label] == 'CAP': 
+                elif self.mappings[encoded_char] == 'CAP': 
                     self.next_is_cap = True
                 else:
                     if self.next_is_num:
-                        if self.mappings[predicted_class_label] != ' ' and isinstance(self.mappings[predicted_class_label], list):
-                            num_str += self.mappings[predicted_class_label][1]
+                        if self.mappings[encoded_char] != ' ' and isinstance(self.mappings[encoded_char], list):
+                            num_str += self.mappings[encoded_char][1]
                         else:
                             self.predictions_arr.append(num_str)
-                            self.predictions_arr.append(self.mappings[predicted_class_label])
+                            self.predictions_arr.append(self.mappings[encoded_char])
                             self.next_is_num = False
                     elif self.next_is_cap:
-                        self.predictions_arr.append(self.mappings[predicted_class_label][0].upper())
+                        self.predictions_arr.append(self.mappings[encoded_char][0].upper())
                         self.next_is_cap = False
                     else:
-                        self.predictions_arr.append(self.mappings[predicted_class_label][0])
+                        self.predictions_arr.append(self.mappings[encoded_char][0])
 
         predicted_txt_ext_spaces = ''.join(self.predictions_arr)
-        clean_txt = re.sub(r'\s+', ' ', predicted_txt_ext_spaces)
+        clean_txt = re.sub(r'\s+', ' ', predicted_txt_ext_spaces) #remove extra spaces
 
         return clean_txt
