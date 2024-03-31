@@ -1,0 +1,12 @@
+matplotlib==3.7.2
+numpy==1.24.3
+opencv_contrib_python==4.8.1.78
+opencv_python==4.8.1.78
+opencv_python_headless==4.8.1.78
+Pillow==9.5.0
+Pillow==10.2.0
+python-telegram-bot==21.0.1
+pyttsx3==2.90
+tensorflow==2.16.1
+tensorflow_intel==2.16.1
+transformers==4.37.2
