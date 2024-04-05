@@ -1,9 +1,11 @@
 # STATUS: GRADE 1 DONE  
 
 # Team Members  
+### Machine Learning Team
   - [Ali Elneklawy](https://github.com/AliElneklawy)
   - [Nada Gamal El-Dien](https://github.com/nadagamaall22)
   - [Nada Tarek](https://github.com/NadaTarek54)
+### Image Processing Team
   - [Ayman Feteha](https://github.com/Ayman-Feteha)
   - [Abdallah Ashraf](https://github.com/3bdallahai)
   - [Ahmed Abdalal](https://github.com/Asyody)
