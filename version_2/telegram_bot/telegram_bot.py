@@ -9,7 +9,7 @@ from spell_checker import *
 from TTS import *
 
 
-TOKEN = 'TOKEN'
+TOKEN = os.getenv('BOT_TOKEN')
 
 async def start(update: Update, context: CallbackContext):
     await update.message.reply_text('Welcome to Braille translator.\nPlease, type /standards to get information about the input image stadards.')
