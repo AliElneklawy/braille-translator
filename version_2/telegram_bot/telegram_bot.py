@@ -172,7 +172,7 @@ async def clean_up(current_dir, image_path):
 
 def main():
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    model_path = r"C:\Users\ALJAZEERA\Desktop\inference\grade_1_model.h5" # change this path to the path where you saved the model.
+    model_path = r"path\to\model.h5" # change this path to the path where you saved the model.
 
     oInference = Inference(model_path)
     oCorrect = TextCorrection()
