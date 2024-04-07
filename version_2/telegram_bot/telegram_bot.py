@@ -1,17 +1,21 @@
-from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, CallbackContext, MessageHandler, filters
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import ApplicationBuilder, CommandHandler, CallbackContext, MessageHandler, filters, CallbackQueryHandler
 import os
-import asyncio
+#import asyncio
+import time
 from process_images import ProcessImage
 from inference import Inference
 from spell_checker import TextCorrection
 from TTS import TTS
 from tg_tqdm_v2 import tg_tqdm
+from telepot.exception import TelegramError
+from urllib3.exceptions import ProtocolError
 
 
 TOKEN = os.getenv('BOT_TOKEN')
 
 async def start(update: Update, context: CallbackContext):
+    context.user_data['voice'] = 'male'
     await update.message.reply_text('Welcome to Braille translator.\nPlease, type /standards to get information about the input image stadards.')
 
 
@@ -57,6 +61,30 @@ async def emails(update: Update, context: CallbackContext):
     
     await update.message.reply_text(reply_text)
 
+async def voice_selection(update: Update, context: CallbackContext):
+    """Send a message with two options for voice selection."""
+    keyboard = [
+        [InlineKeyboardButton("Male Voice", callback_data='male')],
+        [InlineKeyboardButton("Female Voice", callback_data='female')]
+    ]
+
+    reply_markup = InlineKeyboardMarkup(keyboard)
+
+    await update.message.reply_text('Please choose a voice:', reply_markup=reply_markup)
+
+
+async def handle_voice_selection(update: Update, context: CallbackContext):
+    """Handle the user's selection from the voice menu."""
+    query = update.callback_query
+    await query.answer()
+
+    if query.data == 'male':
+        context.user_data['voice'] = 'male'
+        await query.edit_message_text(text="Voice set to Male.")
+    elif query.data == 'female':
+        context.user_data['voice'] = 'female'
+        await query.edit_message_text(text="Voice set to Female.")
+
 
 async def get_image(update: Update, context: CallbackContext, current_dir):
     if update.message.photo:
@@ -75,21 +103,36 @@ async def get_image(update: Update, context: CallbackContext, current_dir):
 
 async def start_translation(update: Update, context: CallbackContext,
                             oProcessImage, oInference, oCorrect):
-
+    
         message = await update.message.reply_text('Translation in progress....')
         images_arr = oProcessImage.divide_the_image_return_array_of_images()
         images_arr_preprocessed = oInference.preprocess(images_arr)
 
         encoded_arr: list = []
         chat_id = update.message.chat_id
-        for im in tg_tqdm(images_arr_preprocessed, TOKEN, chat_id, unit=' chars'): # show progress bar
-            encoded_arr.append(oInference.predict(im))
+
+        try:
+            for im in tg_tqdm(images_arr_preprocessed, TOKEN, chat_id, unit=' chars'): # show progress bar
+                encoded_arr.append(oInference.predict(im))
+        except TelegramError as e:
+            print("TelegramError occurred. Progress message in tg_tqdm encountered an error:", e)
+        except ProtocolError: # TO BE RECHECKED WITH LINE 178
+            await update.message.reply_text('Something went wrong. Please, resend the image.')
+            return ''
 
         text: str = oInference.decode(encoded_arr)
 
-        await message.edit_text('Translation is done. Performing text correction....')
+        try:
+            await message.edit_text('Translation is done. Performing text correction....')
+        except:
+            await update.message.reply_text('Translation is done. Performing text correction....')
+
         corrected_txt: str = oCorrect.correction(text)
-        await message.edit_text(corrected_txt)
+
+        try:
+            await message.edit_text(corrected_txt)
+        except:
+            await update.message.reply_text(corrected_txt)
 
         encoded_arr.clear()
         images_arr_preprocessed.clear()
@@ -98,9 +141,14 @@ async def start_translation(update: Update, context: CallbackContext,
 
 
 async def generate_voice(update: Update, context: CallbackContext, current_dir, oVoice, text):
+    if context.user_data['voice'] == 'male':
+        voice_id = 0 
+    else:
+        voice_id = 1
+
     # retry mecahnism
     max_retries, retry_delay = 3, 5
-    oVoice.save_file(text, current_dir)
+    oVoice.save_file(text, current_dir, voice_id)
     voice_path_local = os.path.join(current_dir, 'tts.ogg')
     for attempt in range(max_retries):
         try:
@@ -109,7 +157,9 @@ async def generate_voice(update: Update, context: CallbackContext, current_dir, 
             break # If successful, break out of the loop
         except Exception as e:
             if attempt < max_retries - 1:
-                await asyncio.sleep(retry_delay)
+                time.sleep(retry_delay)
+            else: 
+                await update.message.reply_text('Couldn\'t generate voice.')
 
 
 async def clean_up(current_dir, image_path):
@@ -122,7 +172,7 @@ async def clean_up(current_dir, image_path):
 
 def main():
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    model_path = r"path\to\the\model.h5" # change this path to the path where you saved the model.
+    model_path = r"C:\Users\ALJAZEERA\Desktop\inference\grade_1_model.h5" # change this path to the path where you saved the model.
 
     oInference = Inference(model_path)
     oCorrect = TextCorrection()
@@ -133,7 +183,8 @@ def main():
         image_path = await get_image(update, context, current_dir)
         oProcessImage = ProcessImage(image_path)
         text = await start_translation(update, context, oProcessImage, oInference, oCorrect)
-        await generate_voice(update, context, current_dir, oVoice, text)
+        if text != '': 
+            await generate_voice(update, context, current_dir, oVoice, text)
         await clean_up(current_dir, image_path)
 
 
@@ -142,6 +193,8 @@ def main():
     app.add_handler(CommandHandler("standards", standards))
     app.add_handler(CommandHandler("repo", repo))
     app.add_handler(CommandHandler("developers", emails))
+    app.add_handler(CommandHandler("voice_selection", voice_selection))
+    app.add_handler(CallbackQueryHandler(handle_voice_selection))
     app.add_handler(MessageHandler(filters.PHOTO, handle_photo))
 
     app.run_polling()
