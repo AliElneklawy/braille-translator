@@ -6,19 +6,19 @@ from PIL import Image
 import os
 
 class ProcessImage():
-    def __init__(self, im_path, save_path) -> None:
+    def __init__(self, im_path=None, save_path=None) -> None:
         self.row_coordinates = []
         self.column_coordinates = []
         self.symbols_as_images = []
         self.im_path = im_path # path to the scanned image
         self.save_path = save_path # temp folder to save the cropped images
 
-    def read_image_if_found(self, input_image):
+    def read_image_if_found(self, input_image):     
         self.image = cv2.imread(input_image, cv2.IMREAD_GRAYSCALE)
         assert self.image is not None, "file could not be read, check with os.path.exists()"
 
     def convert_image_to_black_and_white(self):
-        blur = cv2.GaussianBlur(self.image,(5,5),0)
+        blur = cv2.GaussianBlur(self.image,(5,5), 0)
         ret3, th3 = cv2.threshold(blur,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
         self.blacknwhite_image = th3-255
 

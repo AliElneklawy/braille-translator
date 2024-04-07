@@ -11,4 +11,5 @@ class TTS():
         self.engine.runAndWait()
     
     def save_file(self, text: str, current_dir):
-        self.engine.save_to_file(text, os.path.join(current_dir, "tts.wav"))
+        self.engine.save_to_file(text, os.path.join(current_dir, "tts.ogg"))
+        self.engine.runAndWait()

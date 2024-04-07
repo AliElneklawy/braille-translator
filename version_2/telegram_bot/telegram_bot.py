@@ -1,15 +1,15 @@
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, CallbackContext, MessageHandler, filters
 import os
-import shutil
 import asyncio
-from process_images import *
-from inference import *
-from spell_checker import *
-from TTS import *
+from process_images import ProcessImage
+from inference import Inference
+from spell_checker import TextCorrection
+from TTS import TTS
+from tg_tqdm_v2 import tg_tqdm
 
 
-TOKEN = 'TOKEN'
+TOKEN = os.getenv('BOT_TOKEN')
 
 async def start(update: Update, context: CallbackContext):
     await update.message.reply_text('Welcome to Braille translator.\nPlease, type /standards to get information about the input image stadards.')
@@ -73,66 +73,68 @@ async def get_image(update: Update, context: CallbackContext, current_dir):
     return image_path_local
 
 
-async def start_translation(update: Update, context: CallbackContext, current_dir,
-                            oProcessImage, oInference, oCorrect, oVoice):
+async def start_translation(update: Update, context: CallbackContext,
+                            oProcessImage, oInference, oCorrect):
 
-        await update.message.reply_text('Performing some preprocessing steps....')
-        oProcessImage.create_dataset_using_an_image()
-        data_dict = oInference.preprocess()
+        message = await update.message.reply_text('Translation in progress....')
+        images_arr = oProcessImage.divide_the_image_return_array_of_images()
+        images_arr_preprocessed = oInference.preprocess(images_arr)
 
-        await update.message.reply_text('Translation in progress. It may take up to few minutes.')
-        encoded_arr = oInference.predict(data_dict)
-        decodede_arr = oInference.decode(encoded_arr)
+        encoded_arr: list = []
+        chat_id = update.message.chat_id
+        for im in tg_tqdm(images_arr_preprocessed, TOKEN, chat_id, unit=' chars'): # show progress bar
+            encoded_arr.append(oInference.predict(im))
 
-        await update.message.reply_text('Translation is done. Performing text correction....')
-        corrected_txt = oCorrect.correction(decodede_arr)
-        await update.message.reply_text(corrected_txt)
+        text: str = oInference.decode(encoded_arr)
 
-        #await update.message.reply_text('Performing text-to-speech....')
-        # retry mecahnism
-        max_retries = 3 
-        retry_delay = 5
-        oVoice.save_file(corrected_txt, current_dir)
-        voice_path_local = os.path.join(current_dir, 'tts.ogg')
-        for attempt in range(max_retries):
-            try:
-                with open(voice_path_local, 'rb') as voice_file:
-                    await update.message.reply_voice(voice_file)
-                break # If successful, break out of the loop
-            except Exception as e:
-                if attempt < max_retries - 1:
-                    await asyncio.sleep(retry_delay)
-                else:
-                    return
+        await message.edit_text('Translation is done. Performing text correction....')
+        corrected_txt: str = oCorrect.correction(text)
+        await message.edit_text(corrected_txt)
+
+        encoded_arr.clear()
+        images_arr_preprocessed.clear()
+
+        return corrected_txt
 
 
-async def clean_up(current_dir, temp_dir, image_path):
+async def generate_voice(update: Update, context: CallbackContext, current_dir, oVoice, text):
+    # retry mecahnism
+    max_retries, retry_delay = 3, 5
+    oVoice.save_file(text, current_dir)
     voice_path_local = os.path.join(current_dir, 'tts.ogg')
-    if os.path.exists(voice_path_local):
-        os.remove(voice_path_local)
-    if os.path.exists(temp_dir):
-        shutil.rmtree(temp_dir)
+    for attempt in range(max_retries):
+        try:
+            with open(voice_path_local, 'rb') as voice_file:
+                await update.message.reply_voice(voice_file)
+            break # If successful, break out of the loop
+        except Exception as e:
+            if attempt < max_retries - 1:
+                await asyncio.sleep(retry_delay)
+
+
+async def clean_up(current_dir, image_path):
+    voice_path_local = os.path.join(current_dir, 'tts.ogg')
     if os.path.exists(image_path):
         os.remove(image_path)
+    if os.path.exists(voice_path_local):
+        os.remove(voice_path_local)
 
 
 def main():
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    temp_dir = os.path.join(current_dir, 'temp')
-    model_path = r"path\to\model.h5" # change this path to the path where you saved the model.
-    if not os.path.exists(temp_dir):
-            os.mkdir(temp_dir)
+    model_path = r"C:\Users\ALJAZEERA\Desktop\inference\grade_1_model.h5" # change this path to the path where you saved the model.
 
-    oInference = Inference(model_path, temp_dir)
+    oInference = Inference(model_path)
     oCorrect = TextCorrection()
     oVoice = TTS()
 
 
-    async def handle_photo(update: Update, context: CallbackContext):
+    async def handle_photo(update: Update, context: CallbackContext): # handle incoming photo
         image_path = await get_image(update, context, current_dir)
-        oProcessImage = ProcessImage(image_path, temp_dir)
-        await start_translation(update, context, current_dir, oProcessImage, oInference, oCorrect, oVoice)
-        await clean_up(current_dir, temp_dir, image_path)
+        oProcessImage = ProcessImage(image_path)
+        text = await start_translation(update, context, oProcessImage, oInference, oCorrect)
+        await generate_voice(update, context, current_dir, oVoice, text)
+        await clean_up(current_dir, image_path)
 
 
     app = ApplicationBuilder().token(TOKEN).build()

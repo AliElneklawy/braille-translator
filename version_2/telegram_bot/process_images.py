@@ -6,7 +6,7 @@ from PIL import Image
 import os
 
 class ProcessImage():
-    def __init__(self, im_path, save_path) -> None:
+    def __init__(self, im_path, save_path=None) -> None:
         self.row_coordinates = []
         self.column_coordinates = []
         self.symbols_as_images = []
