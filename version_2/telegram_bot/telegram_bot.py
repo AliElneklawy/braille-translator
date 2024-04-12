@@ -240,7 +240,7 @@ def create_handle_photo(oVoice, oCorrect, oInference, current_dir):
 
 def main():
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    model_path = r"C:\Users\ALJAZEERA\Desktop\inference\grade_1_model.h5"
+    model_path = r"path\to\model.h5"
 
     oInference = Inference(model_path)
     oCorrect = TextCorrection()
