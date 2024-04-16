@@ -11,11 +11,7 @@ from speech_to_text import SpeechToText
 from tg_tqdm_v2 import tg_tqdm
 from telepot.exception import TelegramError
 from urllib3.exceptions import ProtocolError
-<<<<<<< Updated upstream
-
-=======
 from telegram.error import TimedOut
->>>>>>> Stashed changes
 
 
 TOKEN = os.getenv('BOT_TOKEN')
