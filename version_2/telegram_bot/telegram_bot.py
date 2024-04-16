@@ -1,7 +1,7 @@
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import ApplicationBuilder, CommandHandler, CallbackContext, MessageHandler, filters, CallbackQueryHandler
 import os
 import time
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import ApplicationBuilder, CommandHandler, CallbackContext, MessageHandler, filters, CallbackQueryHandler
 from process_images import ProcessImage
 from inference import Inference
 from spell_checker import TextCorrection
@@ -11,14 +11,20 @@ from speech_to_text import SpeechToText
 from tg_tqdm_v2 import tg_tqdm
 from telepot.exception import TelegramError
 from urllib3.exceptions import ProtocolError
+<<<<<<< Updated upstream
 
+=======
+from telegram.error import TimedOut
+>>>>>>> Stashed changes
 
 
 TOKEN = os.getenv('BOT_TOKEN')
 
+
 async def start(update: Update, context: CallbackContext):
     context.user_data['voice'] = 'male'
-    await update.message.reply_text('Welcome to Braille translator.\nPlease, type /standards to get information about the input image stadards.')
+    first_name = update.effective_user.first_name
+    await update.message.reply_text(f'Hey {first_name}. Please, type /standards to get information about the input image stadards.')
 
 
 async def help(update: Update, context: CallbackContext):
@@ -101,28 +107,15 @@ async def handle_voice_selection(update: Update, context: CallbackContext):
         await query.edit_message_text(text="Voice set to Female.")
 
 
-async def get_image(update: Update, context: CallbackContext, current_dir):
-    if update.message.photo:
-        photo = update.message.photo[-1]
-        # Download the photo
-        file = await context.bot.get_file(photo.file_id)
-        file_bytes = await file.download_as_bytearray()
-
-        # Save the photo to the current working directory
-        image_path_local = os.path.join(current_dir, f"{photo.file_id}.jpg")
-        with open(image_path_local, 'wb') as f:
-            f.write(file_bytes)
-        
-    return image_path_local
-
-
-async def get_speech(update: Update, context: CallbackContext, current_dir):
+async def get_file(update: Update, context: CallbackContext, current_dir):
     if update.message.voice:
         file = update.message.voice
     elif update.message.audio:
         file = update.message.audio
     elif update.message.video:
         file = update.message.video
+    elif update.message.photo:
+        file = update.message.photo[-1]
 
     file = await context.bot.get_file(file.file_id)
     file_bytes = await file.download_as_bytearray()
@@ -155,23 +148,14 @@ async def start_translation(update: Update, context: CallbackContext,
 
         text: str = oInference.decode(encoded_arr)
 
-        try:
-            await message.edit_text('Translation is done. Performing text correction....')
-        except:
-            await update.message.reply_text('Translation is done. Performing text correction....')
-
+        await message.edit_text('Translation is done. Performing text correction....')
         corrected_txt: str = oCorrect.correction(text)
-
-        try:
-            await message.edit_text(corrected_txt)
-        except:
-            await update.message.reply_text(corrected_txt)
+        await message.edit_text(corrected_txt)
 
         encoded_arr.clear()
         images_arr_preprocessed.clear()
 
         return corrected_txt
-
 
 async def generate_voice(update: Update, context: CallbackContext, current_dir, oVoice, text):
     if context.user_data['voice'] == 'male':
@@ -188,7 +172,8 @@ async def generate_voice(update: Update, context: CallbackContext, current_dir, 
             with open(voice_path_local, 'rb') as voice_file:
                 await update.message.reply_voice(voice_file)
             break # If successful, break out of the loop
-        except Exception as e:
+        except TimedOut as e:
+            print('Error occured while generating voice: ', e)
             if attempt < max_retries - 1:
                 time.sleep(retry_delay)
             else: 
@@ -213,7 +198,7 @@ def create_text_to_braille(oTextToBraille):
 
 def create_speech_to_braille(oVoiceToText, oTextToBraille, current_dir):
     async def speech_to_braille(update: Update, context: CallbackContext):
-        msg_path = await get_speech(update, context, current_dir)
+        msg_path = await get_file(update, context, current_dir)
 
         message = await update.message.reply_text('Transcribtion and translation in progress....')
         text = oVoiceToText.transcribe(msg_path)        
@@ -229,7 +214,7 @@ def create_speech_to_braille(oVoiceToText, oTextToBraille, current_dir):
 
 def create_handle_photo(oVoice, oCorrect, oInference, current_dir):
     async def handle_photo(update: Update, context: CallbackContext):
-        image_path = await get_image(update, context, current_dir)
+        image_path = await get_file(update, context, current_dir)
         oProcessImage = ProcessImage(image_path)
         text = await start_translation(update, context, oProcessImage, oInference, oCorrect)
         if text != '': 
@@ -249,8 +234,8 @@ def main():
     oVoiceToText = SpeechToText()
 
     handle_photo_handler = create_handle_photo(oVoice, oCorrect, oInference, current_dir)
-    text_to_braille_handler = create_text_to_braille(oTextToBraille)
     speech_to_braille_handler = create_speech_to_braille(oVoiceToText, oTextToBraille, current_dir)
+    text_to_braille_handler = create_text_to_braille(oTextToBraille)
 
     app = ApplicationBuilder().token(TOKEN).build()
 
@@ -264,7 +249,7 @@ def main():
     app.add_handler(CallbackQueryHandler(handle_voice_selection))
 
     # message handlers
-    app.add_handler(MessageHandler(filters.PHOTO, handle_photo_handler)) # handle photo
+    app.add_handler(MessageHandler(filters.PHOTO, handle_photo_handler, block=False)) # handle photo
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, text_to_braille_handler)) # handle text
     app.add_handler(MessageHandler(filters.VOICE | filters.AUDIO | filters.VIDEO, speech_to_braille_handler)) # handle voice, video and audio
 
