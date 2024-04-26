@@ -48,6 +48,27 @@ class Inference():
             
         return predicted_class_label
     
+    
+    def FormatText(self, text: str) -> str:
+        formatted_text = ""
+        words = re.findall(r'\S+|\s+', text)  # Split text into words and preserve consecutive spaces
+        consecutive_spaces = 0
+        is_dot = 0
+        for word in words:            
+            if word.isspace():
+                consecutive_spaces += len(word)
+            elif consecutive_spaces > 0:
+                if (len(word) <= consecutive_spaces - 1) and is_dot:  # Check if word fits in consecutive spaces
+                    formatted_text += '\n' + word
+                else:
+                    formatted_text += ' ' + word
+                consecutive_spaces = 0
+            else:
+                formatted_text += ' ' + word.strip()
+            if not(word.isspace()):
+                is_dot = (word[-1]=='.')
+        return formatted_text.lstrip()  # Remove leading space from the result
+    
 
     def decode(self, encoded_arr: list) -> str: # Mapping encoded characters to their values in the mappings dict
         predictions_arr = []
@@ -73,6 +94,5 @@ class Inference():
                         predictions_arr.append(self.mappings[encoded_char][0])
 
         predicted_txt_ext_spaces = ''.join(predictions_arr)
-        clean_txt = re.sub(r'\s+', ' ', predicted_txt_ext_spaces) #remove extra spaces
-
-        return clean_txt
+        txt_inParagraphs = self.FormatText(predicted_txt_ext_spaces)
+        return txt_inParagraphs
