@@ -9,6 +9,16 @@
   - [Ahmed Abdalal](https://github.com/Asyody)
   - [Adham Hedia](https://github.com/Adham-M0)
 
+# Demo
+
+
+https://github.com/AliElneklawy/braille-translator/assets/89526026/24d9f843-766a-4796-941c-7c3f804cdb5d
+
+
+
+
+
+
 # Braille Image Translation and Text-to-Speech Conversion
 
 ## Overview
