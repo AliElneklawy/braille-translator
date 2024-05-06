@@ -12,11 +12,9 @@
 # Demo
 
 
-https://github.com/AliElneklawy/braille-translator/assets/89526026/24d9f843-766a-4796-941c-7c3f804cdb5d
-
-
-
-
+<p align="center">
+  <img src="https://github.com/AliElneklawy/braille-translator/blob/main/utils/demo.gif" alt="Project Summary" />
+</p>
 
 
 # Braille Image Translation and Text-to-Speech Conversion
