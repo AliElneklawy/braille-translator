@@ -37,7 +37,6 @@ There are two main directories in this repository; `version_1` and `version_2`. 
 
 ```
 braille-translator/
-├─ README.md
 ├─ utils/
 │  └─ project summary.jpg
 ├─ version_1/
@@ -68,7 +67,6 @@ braille-translator/
 │     └─ push large files.txt
 └─ version_2/
    ├─ input/
-   │  ├─ .gitattributes
    │  ├─ dataset.zip
    │  ├─ example_images/
    │  │  ├─ 000110.png
