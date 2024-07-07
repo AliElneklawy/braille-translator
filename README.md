@@ -28,7 +28,7 @@ This project aims to bridge the gap between Braille literacy and accessibility t
 Furthermore, the project extends beyond mere text extraction by incorporating a text-to-speech conversion step. By synthesizing the extracted English text into audible speech, the system empowers individuals with visual impairments to access Braille content effortlessly. Our project is focused on translating grade 1, front-only, scanned Braille images. The summary of the project is shown in the figure below.
 
 <p align="center">
-  <img src="https://github.com/AliElneklawy/braille-translation/blob/main/utils/project%20summary.jpg" alt="Project Summary" />
+  <img src="https://github.com/AliElneklawy/braille-translator/blob/main/utils/project%20summary.png" alt="Project Summary" />
 </p>
 
 ## Repository Structure
