@@ -39,71 +39,45 @@ There are two main directories in this repository; `version_1` and `version_2`. 
 braille-translator/
 ├─ utils/
 │  └─ project summary.jpg
-├─ version_1/
-│  ├─ README.md
-│  ├─ input/
-│  │  ├─ characters/
-│  │  │  ├─ A/
-│  │  │  │  ├─ ......
-│  │  │  ├─ B/
-│  │  │  │  ├─ .....
-│  │  │  ├─ C/
-│  │  │  │  ├─ .....
-│  │  │  ├─ .....
-│  │  └─ preprocessed_data.pkl.gz
-│  ├─ models/
-│  │  └─ final_model.h5
-│  ├─ notebooks/
-│  │  ├─ analyse-confusion-matrix.ipynb
-│  │  ├─ create_data.ipynb
-│  │  └─ train_model.ipynb
-│  ├─ src/
-│  │  └─ organize_chararcters.py
-│  └─ utils/
-│     ├─ 1st term summary.pdf
-│     ├─ Analayzing the confusion matrix.pptx
-│     ├─ accuracy.png
-│     ├─ loss.png
-│     └─ push large files.txt
-└─ version_2/
-   ├─ input/
-   │  ├─ dataset.zip
-   │  ├─ example_images/
-   │  │  ├─ 000110.png
-   │  │  ├─ 010111.png
-   │  │  ├─ .....
-   │  ├─ preprocessed_data.pkl.gz
-   │  ├─ saved_data_info.txt
-   │  ├─ test_p5/
-   │  │  ├─ 1.png
-   │  │  ├─ .....
-   │  │  ├─ 680.png
-   │  │  └─ test.rar
-   │  └─ test_p6/
-   │     ├─ 1.png
-   │     ├─ .....
-   │     ├─ 578.png
-   │     └─ Page 6.rar
-   ├─ models/
-   │  └─ grade_1_model.h5
-   ├─ notebooks/
-   │  ├─ augmentation.ipynb
-   │  ├─ inference.ipynb
-   │  └─ train-model-custom-data.ipynb
-   ├─ requirements.txt
-   ├─ src/
-   │  ├─ TTS.py
-   │  ├─ inference.py
-   │  ├─ main.py
-   │  ├─ process_images.py
-   │  └─ spell_checker.py
-   └─ telegram_bot/
-      ├─ TTS.py
-      ├─ en_to_braille.py
-      ├─ inference.py
-      ├─ process_images.py
-      ├─ speech_to_text.py
-      ├─ spell_checker.py
-      ├─ telegram_bot.py
-      └─ tg_tqdm_v2.py
+├─ input/
+│  ├─ dataset.zip
+│  ├─ example_images/
+│  │  ├─ 000110.png
+│  │  ├─ 010111.png
+│  │  ├─ .....
+│  ├─ preprocessed_data.pkl.gz
+│  ├─ saved_data_info.txt
+│  ├─ test_p5/
+│  │  ├─ 1.png
+│  │  ├─ .....
+│  │  ├─ 680.png
+│  │  └─ test.rar
+│  └─ test_p6/
+│     ├─ 1.png
+│     ├─ .....
+│     ├─ 578.png
+│     └─ Page 6.rar
+├─ models/
+│  └─ grade_1_model.h5
+├─ notebooks/
+│  ├─ augmentation.ipynb
+│  ├─ inference.ipynb
+│  └─ train-model-custom-data.ipynb
+├─ requirements.txt
+├─ src/
+│  ├─ TTS.py
+│  ├─ inference.py
+│  ├─ main.py
+│  ├─ process_images.py
+│  └─ spell_checker.py
+└─ telegram_bot/
+   ├─ TTS.py
+   ├─ en_to_braille.py
+   ├─ inference.py
+   ├─ process_images.py
+   ├─ speech_to_text.py
+   ├─ spell_checker.py
+   ├─ telegram_bot.py
+   └─ tg_tqdm_v2.py
+
 ```
