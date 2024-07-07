@@ -33,7 +33,7 @@ Furthermore, the project extends beyond mere text extraction by incorporating a 
 
 ## Repository Structure
 
-There are two main directories in this repository; `version_1` and `version_2`. In `version_1` folder, we tried out several models on a dataset that we got from kaggle. The dataset closely resembles the one that we are going to generate in `version_2`. It turned out that DenseNet201 model was the most suitable model for our task so, we decided to continue with this model. In `version_2`, we generated our own dataset and trained a DenseNet201 model on it. The strucure of the repository is shown below.
+The strucure of the repository is shown below.
 
 ```
 braille-translator/
