@@ -38,7 +38,9 @@ There are two main directories in this repository; `version_1` and `version_2`. 
 ```
 braille-translator/
 ├─ utils/
-│  └─ project summary.jpg
+│  ├─ project summary.png
+│  ├─ Graduation Project Book.pdf
+│  └─ Presentation.pptx
 ├─ input/
 │  ├─ dataset.zip
 │  ├─ example_images/
