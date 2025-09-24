@@ -1,0 +1,9 @@
+TTS
+en_to_braille
+inference
+main
+process_images
+speech_to_text
+spell_checker
+telegram_bot
+tg_tqdm_v2

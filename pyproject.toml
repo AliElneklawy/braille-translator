@@ -1,0 +1,22 @@
+[project]
+name = "braille-translator"
+version = "1.0.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = "==3.10.13"
+dependencies = [
+    "matplotlib==3.7.2",
+    "numpy==1.24.3",
+    "openai-whisper==20240930",
+    "opencv-contrib-python==4.8.1.78",
+    "opencv-python==4.8.1.78",
+    "opencv-python-headless==4.8.1.78",
+    "pillow==10.3.0",
+    "python-telegram-bot==21.0.1",
+    "pyttsx3==2.90",
+    "telepot==12.7",
+    "tensorflow==2.16.1",
+    "tensorflow-io-gcs-filesystem==0.31.0",
+    "tqdm==4.66.1",
+    "transformers==4.37.2",
+]

@@ -1,0 +1,16 @@
+README.md
+pyproject.toml
+src/TTS.py
+src/en_to_braille.py
+src/inference.py
+src/main.py
+src/process_images.py
+src/speech_to_text.py
+src/spell_checker.py
+src/telegram_bot.py
+src/tg_tqdm_v2.py
+src/braille_translator.egg-info/PKG-INFO
+src/braille_translator.egg-info/SOURCES.txt
+src/braille_translator.egg-info/dependency_links.txt
+src/braille_translator.egg-info/requires.txt
+src/braille_translator.egg-info/top_level.txt

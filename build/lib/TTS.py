@@ -10,10 +10,6 @@ class TTS():
         self.engine.say(text)
         self.engine.runAndWait()
     
-    def save_file(self, text: str, current_dir, voice_id: int = 0):
-        voices = self.engine.getProperty('voices')
-        self.engine.setProperty('voice', voices[voice_id].id)
+    def save_file(self, text: str, current_dir):
         self.engine.save_to_file(text, os.path.join(current_dir, "tts.ogg"))
         self.engine.runAndWait()
-
-        
