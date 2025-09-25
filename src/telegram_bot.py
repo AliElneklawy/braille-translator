@@ -1,6 +1,8 @@
 import os
 import time
+from pathlib import Path
 
+from dotenv import load_dotenv
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.error import TimedOut
 from telegram.ext import (
@@ -22,6 +24,8 @@ from spell_checker import TextCorrection
 from tg_tqdm_v2 import tg_tqdm
 from TTS import TTS
 
+
+load_dotenv()
 TOKEN = os.getenv("BOT_TOKEN")
 
 
@@ -116,6 +120,10 @@ async def handle_voice_selection(update: Update, context: CallbackContext):
 
 
 async def get_file(update: Update, context: CallbackContext, current_dir):
+    current_dir_path = Path(current_dir)
+    downloads_dir = current_dir_path / "downloads"
+    downloads_dir.mkdir(parents=True, exist_ok=True)
+
     if update.message.voice:
         file = update.message.voice
     elif update.message.audio:
@@ -127,12 +135,17 @@ async def get_file(update: Update, context: CallbackContext, current_dir):
 
     file = await context.bot.get_file(file.file_id)
     file_bytes = await file.download_as_bytearray()
-    file_path_local = os.path.join(current_dir, f"{file.file_id}")
+    file_suffix = Path(getattr(file, "file_path", "")).suffix
+    if not file_suffix:
+        file_suffix = ""
 
-    with open(file_path_local, "wb") as f:
+    filename = f"{file.file_id}{file_suffix}"
+    file_path_local = downloads_dir / filename
+
+    with file_path_local.open("wb") as f:
         f.write(file_bytes)
 
-    return file_path_local
+    return str(file_path_local)
 
 
 async def start_translation(
@@ -162,8 +175,8 @@ async def start_translation(
         return ""
 
     text: str = oInference.decode(encoded_arr)
-
     await message.edit_text("Translation is done. Performing text correction....")
+
     corrected_txt: str = oCorrect.correction(text)
     await message.edit_text(corrected_txt)
 
@@ -183,11 +196,17 @@ async def generate_voice(
 
     # retry mecahnism
     max_retries, retry_delay = 3, 5
-    oVoice.save_file(text, current_dir, voice_id)
-    voice_path_local = os.path.join(current_dir, "tts.ogg")
+    oVoice.set_voice_by_index(voice_id)
+    audio_dir = Path(current_dir) / "audio_cache"
+    audio_dir.mkdir(parents=True, exist_ok=True)
+    voice_path_local = oVoice.save_file(
+        text,
+        output_dir=audio_dir,
+        filename="tts.ogg",
+    )
     for attempt in range(max_retries):
         try:
-            with open(voice_path_local, "rb") as voice_file:
+            with voice_path_local.open("rb") as voice_file:
                 await update.message.reply_voice(voice_file)
             break  # If successful, break out of the loop
         except TimedOut as e:
@@ -196,14 +215,18 @@ async def generate_voice(
                 time.sleep(retry_delay)
             else:
                 await update.message.reply_text("Couldn't generate voice.")
+    return voice_path_local
 
 
-async def clean_up(current_dir, file_path):
-    voice_path_local = os.path.join(current_dir, "tts.ogg")
-    if os.path.exists(file_path):
-        os.remove(file_path)
-    if os.path.exists(voice_path_local):
-        os.remove(voice_path_local)
+async def clean_up(current_dir, file_path, audio_path=None):
+    file_path_obj = Path(file_path)
+    if file_path_obj.exists():
+        file_path_obj.unlink()
+
+    if audio_path:
+        audio_path = Path(audio_path)
+        if audio_path.exists():
+            audio_path.unlink()
 
 
 def create_text_to_braille(oTextToBraille):
@@ -241,8 +264,12 @@ def create_handle_photo(oVoice, oCorrect, oInference, current_dir):
             update, context, oProcessImage, oInference, oCorrect
         )
         if text != "":
-            await generate_voice(update, context, current_dir, oVoice, text)
-        await clean_up(current_dir, image_path)
+            voice_path = await generate_voice(
+                update, context, current_dir, oVoice, text
+            )
+        else:
+            voice_path = None
+        await clean_up(current_dir, image_path, voice_path)
 
     return handle_photo
 
