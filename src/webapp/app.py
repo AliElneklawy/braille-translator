@@ -117,14 +117,18 @@ async def translate(
     file_bytes = await file.read()
 
     generate_audio_flag = False
-    if settings.enable_tts and generate_audio is not None:
-        generate_audio_flag = str(generate_audio).lower() in {"1", "true", "on", "yes"}
-    elif settings.enable_tts:
-        generate_audio_flag = True
+    if settings.enable_tts:
+        if generate_audio is not None:
+            generate_audio_flag = str(generate_audio).lower() in {"1", "true", "on", "yes"}
+        else:
+            generate_audio_flag = False
 
-    apply_correction_flag = settings.enable_spell_correction
-    if apply_correction is not None:
-        apply_correction_flag = str(apply_correction).lower() in {"1", "true", "on", "yes"}
+    apply_correction_flag = False
+    if settings.enable_spell_correction:
+        if apply_correction is not None:
+            apply_correction_flag = str(apply_correction).lower() in {"1", "true", "on", "yes"}
+        else:
+            apply_correction_flag = False
 
     try:
         result: TranslationResult = await run_in_threadpool(
@@ -164,7 +168,7 @@ async def translate(
             },
             status_code=500,
         )
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:  # noqa: BLE001, F841
         return templates.TemplateResponse(
             "index.html",
             {
