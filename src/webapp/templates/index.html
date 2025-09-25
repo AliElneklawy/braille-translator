@@ -123,7 +123,9 @@
           </article>
           <article class="result-card highlight">
             <h3>Spell Corrected Text</h3>
+            {% if result.correction_applied %}
             <p>{{ result.corrected_text or "No corrected text available." }}</p>
+            <p class="status-indicator">Spell correction applied.</p>
             <button
               class="copy-button"
               type="button"
@@ -131,6 +133,12 @@
             >
               Copy text
             </button>
+            {% elif apply_correction %}
+            <p>{{ result.raw_text or "No text available to correct." }}</p>
+            <p class="status-indicator">Spell correction was requested, but the server could not apply it.</p>
+            {% else %}
+            <p class="status-indicator">Spell correction was skipped for this translation.</p>
+            {% endif %}
           </article>
           <article class="result-card audio">
             <h3>Audio Narration</h3>

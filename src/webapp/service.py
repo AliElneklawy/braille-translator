@@ -24,6 +24,7 @@ class TranslationResult:
     corrected_text: str
     audio_path: Optional[Path]
     audio_url: Optional[str]
+    correction_applied: bool
 
 
 class BrailleTranslatorService:
@@ -109,6 +110,7 @@ class BrailleTranslatorService:
             raw_text = self._inference.decode(encoded).strip()
 
             corrected_text = raw_text
+            correction_applied = False
             effective_correction = (
                 self._enable_correction
                 if apply_correction is None
@@ -117,6 +119,7 @@ class BrailleTranslatorService:
             if effective_correction and raw_text:
                 try:
                     corrected_text = self._ensure_correction_model().correction(raw_text)
+                    correction_applied = True
                 except Exception as exc:  # noqa: BLE001
                     raise HTTPException(
                         status_code=500,
@@ -147,6 +150,7 @@ class BrailleTranslatorService:
                 corrected_text=corrected_text,
                 audio_path=audio_path,
                 audio_url=audio_url,
+                correction_applied=correction_applied,
             )
         finally:
             try:

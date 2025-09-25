@@ -87,6 +87,7 @@ async def index(request: Request) -> HTMLResponse:
             "current_year": datetime.now().year,
             "generate_audio": settings.enable_tts,
             "apply_correction": settings.enable_spell_correction,
+            "correction_applied": None,
         },
     )
 
@@ -110,6 +111,8 @@ async def translate(
                 "settings": settings,
                 "current_year": datetime.now().year,
                 "generate_audio": settings.enable_tts,
+                "apply_correction": settings.enable_spell_correction,
+                "correction_applied": None,
             },
             status_code=400,
         )
@@ -151,6 +154,7 @@ async def translate(
                 "current_year": datetime.now().year,
                 "generate_audio": generate_audio_flag,
                 "apply_correction": apply_correction_flag,
+                "correction_applied": None,
             },
             status_code=status_code,
         )
@@ -165,6 +169,7 @@ async def translate(
                 "current_year": datetime.now().year,
                 "generate_audio": generate_audio_flag,
                 "apply_correction": apply_correction_flag,
+                "correction_applied": None,
             },
             status_code=500,
         )
@@ -179,6 +184,7 @@ async def translate(
                 "current_year": datetime.now().year,
                 "generate_audio": generate_audio_flag,
                 "apply_correction": apply_correction_flag,
+                "correction_applied": None,
             },
             status_code=500,
         )
@@ -193,6 +199,7 @@ async def translate(
             "current_year": datetime.now().year,
             "generate_audio": generate_audio_flag,
             "apply_correction": apply_correction_flag,
+            "correction_applied": result.correction_applied,
         },
     )
 
