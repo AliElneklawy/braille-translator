@@ -6,6 +6,7 @@ Requires-Python: ==3.10.13
 Description-Content-Type: text/markdown
 Requires-Dist: matplotlib==3.7.2
 Requires-Dist: numpy==1.24.3
+Requires-Dist: openai-whisper==20240930
 Requires-Dist: opencv-contrib-python==4.8.1.78
 Requires-Dist: opencv-python==4.8.1.78
 Requires-Dist: opencv-python-headless==4.8.1.78
@@ -17,6 +18,12 @@ Requires-Dist: tensorflow==2.16.1
 Requires-Dist: tensorflow-io-gcs-filesystem==0.31.0
 Requires-Dist: tqdm==4.66.1
 Requires-Dist: transformers==4.37.2
+Requires-Dist: fastapi==0.111.0
+Requires-Dist: uvicorn[standard]==0.30.1
+Requires-Dist: python-multipart==0.0.9
+Requires-Dist: jinja2==3.1.4
+Requires-Dist: aiofiles==23.2.1
+Requires-Dist: pydantic-settings==2.4.0
 
 # Team Members  
 ### Machine Learning Team

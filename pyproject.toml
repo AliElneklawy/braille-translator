@@ -19,4 +19,10 @@ dependencies = [
     "tensorflow-io-gcs-filesystem==0.31.0",
     "tqdm==4.66.1",
     "transformers==4.37.2",
+    "fastapi==0.111.0",
+    "uvicorn[standard]==0.30.1",
+    "python-multipart==0.0.9",
+    "jinja2==3.1.4",
+    "aiofiles==23.2.1",
+    "pydantic-settings==2.4.0",
 ]

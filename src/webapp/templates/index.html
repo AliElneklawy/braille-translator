@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Braille Translator</title>
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', path='css/styles.css') }}"
+    />
+    <link rel="icon" href="{{ url_for('static', path='img/favicon.svg') }}" />
+  </head>
+  <body>
+    <div class="background-gradient"></div>
+    <header class="page-header">
+      <div class="brand">
+        <img src="{{ url_for('static', path='img/logo.svg') }}" alt="Logo" />
+        <span>Braille Translator</span>
+      </div>
+      <nav class="nav-links">
+        <a href="#how-it-works">How it works</a>
+        <a href="#results">Results</a>
+        <a
+          href="https://github.com/AliElneklawy/braille-translator"
+          target="_blank"
+          rel="noopener"
+          >GitHub</a
+        >
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <h1>Convert Braille images into expressive speech in seconds.</h1>
+        <p>
+          Upload a Braille document snapshot and get a clean transcription with
+          optional spell correction and immersive audio playback.
+        </p>
+      </section>
+
+      <section class="translator" id="translator">
+        <form
+          class="upload-card"
+          action="{{ request.url_for('translate') }}"
+          method="post"
+          enctype="multipart/form-data"
+        >
+          <div class="upload-area" id="drop-zone">
+            <div class="upload-icon">📄</div>
+            <h2>Drop your Braille image here</h2>
+            <p>Supported formats: PNG, JPG, JPEG, BMP, TIF</p>
+            <label class="upload-button" for="file-input">
+              <span>Browse files</span>
+              <input
+                id="file-input"
+                name="file"
+                type="file"
+                accept="image/*"
+                required
+              />
+            </label>
+            <div class="preview" id="preview-container" hidden>
+              <img id="preview-image" alt="Selected preview" />
+            </div>
+          </div>
+
+          <div class="options">
+            <label class="toggle">
+              <input
+                type="checkbox"
+                name="generate_audio"
+                value="1"
+                {% if generate_audio or (result and result.audio_url) %}checked{% endif %}
+              />
+              <span class="slider"></span>
+              <span class="label">Generate audio narration</span>
+            </label>
+            <label class="toggle">
+              <input
+                type="checkbox"
+                name="apply_correction"
+                value="1"
+                {% if apply_correction %}checked{% endif %}
+              />
+              <span class="slider"></span>
+              <span class="label">Apply spell correction</span>
+            </label>
+            <p class="note">
+              Spell correction defaults to the server setting.
+              Toggle to override for this upload, or set
+              <code>BRAILLE_ENABLE_SPELL_CORRECTION</code> to change the default.
+            </p>
+          </div>
+          <button class="primary-button" type="submit">
+            Translate Braille → Text + Audio
+          </button>
+        </form>
+
+        {% if error_message %}
+        <div class="alert error">{{ error_message }}</div>
+        {% endif %}
+      </section>
+
+      <section class="results" id="results">
+        {% if result %}
+        <div class="result-grid">
+          <article class="result-card">
+            <h3>Model Output</h3>
+            <p>{{ result.raw_text or "No raw text detected." }}</p>
+          </article>
+          <article class="result-card highlight">
+            <h3>Spell Corrected Text</h3>
+            <p>{{ result.corrected_text or "No corrected text available." }}</p>
+            <button
+              class="copy-button"
+              type="button"
+              data-copy-target="{{ result.corrected_text | e }}"
+            >
+              Copy text
+            </button>
+          </article>
+          <article class="result-card audio">
+            <h3>Audio Narration</h3>
+            {% if result.audio_url %}
+            <audio controls>
+              <source src="{{ result.audio_url }}" type="audio/wav" />
+              Your browser does not support the audio element.
+            </audio>
+            <a class="download-link" href="{{ result.audio_url }}" download>
+              Download narration
+            </a>
+            {% else %}
+            <p>
+              Audio generation was skipped. Enable the toggle before submitting
+              to receive an audio narration.
+            </p>
+            {% endif %}
+          </article>
+        </div>
+        {% else %}
+        <div class="empty-state" id="how-it-works">
+          <h3>Results will appear here</h3>
+          <p>
+            After processing the image, you will see the AI transcription, spell
+            correction, and audio playback options in this space.
+          </p>
+        </div>
+        {% endif %}
+      </section>
+    </main>
+
+    <footer class="page-footer">
+      <p>&copy; {{ current_year }} Braille Translator Team</p>
+    </footer>
+
+    <script src="{{ url_for('static', path='js/app.js') }}" defer></script>
+  </body>
+</html>

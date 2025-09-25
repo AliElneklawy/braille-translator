@@ -1,9 +1,9 @@
 import whisper
 
 
-class SpeechToText():
+class SpeechToText:
     def __init__(self):
-        self.model = whisper.load_model('small')
+        self.model = whisper.load_model("small")
 
     def transcribe(self, file_path):
         result = self.model.transcribe(file_path)

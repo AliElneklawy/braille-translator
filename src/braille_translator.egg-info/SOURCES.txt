@@ -1,6 +1,7 @@
 README.md
 pyproject.toml
 src/TTS.py
+src/__init__.py
 src/en_to_braille.py
 src/inference.py
 src/main.py
@@ -14,3 +15,6 @@ src/braille_translator.egg-info/SOURCES.txt
 src/braille_translator.egg-info/dependency_links.txt
 src/braille_translator.egg-info/requires.txt
 src/braille_translator.egg-info/top_level.txt
+src/webapp/__init__.py
+src/webapp/app.py
+src/webapp/service.py
