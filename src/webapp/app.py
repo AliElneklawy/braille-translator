@@ -32,6 +32,25 @@ app.mount("/media", StaticFiles(directory=MEDIA_DIR), name="media")
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 
 
+@app.get("/", response_class=HTMLResponse)
+async def index(request: Request):
+    """Render the main index page."""
+    settings = get_settings()
+    return templates.TemplateResponse(
+        "index.html",
+        {
+            "request": request,
+            "current_year": datetime.now().year,
+            "generate_audio": settings.enable_tts,
+            "apply_correction": settings.enable_spell_correction,
+            "result": None,
+            "error_message": None,
+            "settings": settings,
+            "correction_applied": None,
+        },
+    )
+
+
 class Settings(BaseSettings):
     model_path: Path = Field(
         default=BASE_DIR.parent.parent / "models" / "grade_1_model.h5",
@@ -62,36 +81,27 @@ def get_settings() -> Settings:
 @lru_cache()
 def get_service() -> BrailleTranslatorService:
     settings = get_settings()
-    try:
-        return BrailleTranslatorService(
-            model_path=settings.model_path,
-            media_root=MEDIA_DIR,
-            enable_correction=settings.enable_spell_correction,
-            enable_tts=settings.enable_tts,
-        )
-    except FileNotFoundError as exc:
-        raise RuntimeError(
-            "Braille translation model not found. Please check BRAILLE_MODEL_PATH."
-        ) from exc
+    return BrailleTranslatorService(
+        model_path=settings.model_path,
+        media_root=MEDIA_DIR,
+        enable_correction=settings.enable_spell_correction,
+        enable_tts=settings.enable_tts,
+    )
 
 
-@app.get("/", response_class=HTMLResponse)
-async def index(request: Request) -> HTMLResponse:
+@app.get("/how-it-works", response_class=HTMLResponse)
+async def how_it_works(request: Request):
+    """Render the 'How It Works' page."""
     settings = get_settings()
     return templates.TemplateResponse(
-        "index.html",
+        "how_it_works.html",
         {
             "request": request,
-            "result": None,
-            "error_message": None,
-            "settings": settings,
             "current_year": datetime.now().year,
             "generate_audio": settings.enable_tts,
             "apply_correction": settings.enable_spell_correction,
-            "correction_applied": None,
         },
     )
-
 
 @app.post("/translate", response_class=HTMLResponse)
 async def translate(

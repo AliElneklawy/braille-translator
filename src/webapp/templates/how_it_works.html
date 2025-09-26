@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>How It Works - Braille Translator</title>
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', path='css/styles.css') }}"
+    />
+    <link rel="icon" href="{{ url_for('static', path='img/favicon.svg') }}" />
+    <style>
+      .content-section {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        backdrop-filter: blur(10px);
+        margin-bottom: 2rem;
+      }
+      .step {
+        margin-bottom: 2.5rem;
+      }
+      .step h3 {
+        color: #4f46e5;
+        margin-bottom: 1rem;
+      }
+      .step p {
+        color: #e5e7eb;
+        line-height: 1.6;
+      }
+      .step-image {
+        max-width: 100%;
+        border-radius: 8px;
+        margin: 1.5rem 0;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .back-button {
+        display: inline-block;
+        margin-top: 2rem;
+        padding: 0.75rem 1.5rem;
+        background-color: #4f46e5;
+        color: white;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+      }
+      .back-button:hover {
+        background-color: #4338ca;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="background-gradient"></div>
+    <header class="page-header">
+      <div class="brand">
+        <img src="{{ url_for('static', path='img/logo.svg') }}" alt="Logo" />
+        <span>Braille Translator</span>
+      </div>
+      <nav class="nav-links">
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="#how-it-works">How it works</a>
+        <a
+          href="https://github.com/AliElneklawy/braille-translator"
+          target="_blank"
+          rel="noopener"
+          >GitHub</a
+        >
+      </nav>
+    </header>
+
+    <main>
+      <section class="content-section">
+        <h1>How It Works</h1>
+        <p>Our Braille Translator uses advanced image processing and deep learning to convert Braille images into text and speech. Here's a step-by-step breakdown of the process:</p>
+        
+        <div class="step">
+          <h3>1. Image Upload</h3>
+          <p>Upload a clear image containing Braille characters. The system supports various image formats including PNG, JPG, and JPEG.</p>
+          <img src="{{ url_for('static', path='img/example-braille.jpg') }}" alt="Example Braille Image" class="step-image"
+          style="width: 300px; height: auto;">
+        </div>
+
+        <div class="step">
+          <h3>2. Image Preprocessing</h3>
+          <p>The uploaded image undergoes several preprocessing steps:</p>
+          <ul>
+            <li>Conversion to grayscale</li>
+            <li>Noise reduction</li>
+            <li>Contrast enhancement</li>
+            <li>Thresholding to create a binary image</li>
+          </ul>
+        </div>
+
+        <div class="step">
+          <h3>3. Braille Cell Detection</h3>
+          <p>The system identifies individual Braille cells using contour detection and grid analysis to ensure accurate character segmentation.</p>
+        </div>
+
+        <div class="step">
+          <h3>4. Deep Learning Translation</h3>
+          <p>A pre-trained deep learning model processes each Braille cell to recognize the corresponding character or symbol. Our model is specifically trained on Grade 1 Braille.</p>
+        </div>
+
+        <div class="step">
+          <h3>5. Post-Processing</h3>
+          <p>The recognized characters are assembled into words and sentences. Optional spell correction is applied if enabled.</p>
+        </div>
+
+        <div class="step">
+          <h3>6. Text-to-Speech (Optional)</h3>
+          <p>If selected, the translated text is converted to natural-sounding speech using advanced TTS technology.</p>
+        </div>
+
+        <div class="step">
+          <h3>7. Results</h3>
+          <p>The final output is presented in an easy-to-read format with the option to listen to the translation.</p>
+        </div>
+
+        <a href="/" class="back-button">Back to Translator</a>
+      </section>
+    </main>
+
+    <footer class="page-footer">
+      <p>&copy; {{ current_year }} Braille Translator Team</p>
+    </footer>
+
+    <script src="{{ url_for('static', path='js/app.js') }}" defer></script>
+  </body>
+</html>
