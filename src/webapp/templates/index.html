@@ -73,7 +73,11 @@
               />
             </label>
             <div class="preview" id="preview-container" hidden>
-              <img id="preview-image" alt="Selected preview" />
+              <img
+                id="preview-image"
+                alt="Selected preview"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
+              />
             </div>
           </div>
 
@@ -98,14 +102,14 @@
               <span class="slider"></span>
               <span class="label">Apply spell correction</span>
             </label>
-            <p class="note">
+            <!-- <p class="note">
               Spell correction defaults to the server setting.
               Toggle to override for this upload, or set
               <code>BRAILLE_ENABLE_SPELL_CORRECTION</code> to change the default.
-            </p>
+            </p> -->
           </div>
           <button class="primary-button" type="submit">
-            Translate Braille → Text + Audio
+            Translate
           </button>
         </form>
 
