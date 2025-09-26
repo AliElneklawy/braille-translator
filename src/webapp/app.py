@@ -103,6 +103,21 @@ async def how_it_works(request: Request):
         },
     )
 
+
+@app.get("/about", response_class=HTMLResponse)
+async def about(request: Request):
+    """Render the 'About' page."""
+    settings = get_settings()
+    return templates.TemplateResponse(
+        "about.html",
+        {
+            "request": request,
+            "current_year": datetime.now().year,
+            "generate_audio": settings.enable_tts,
+            "apply_correction": settings.enable_spell_correction,
+        },
+    )
+
 @app.post("/translate", response_class=HTMLResponse)
 async def translate(
     request: Request,

@@ -31,17 +31,30 @@
         border-radius: 16px;
         backdrop-filter: blur(10px);
         margin-bottom: 2rem;
+        color: #f3f4f6; /* Lighter text color for better visibility */
       }
       .step {
         margin-bottom: 2.5rem;
       }
       .step h3 {
-        color: #4f46e5;
+        color: #818cf8; /* Lighter purple for better visibility */
         margin-bottom: 1rem;
+        font-size: 1.5rem;
       }
       .step p {
         color: #e5e7eb;
-        line-height: 1.6;
+        line-height: 1.8; /* Increased line height for better readability */
+        font-size: 1.1rem;
+      }
+      .content-section h1 {
+        color: #ffffff;
+        margin-bottom: 1.5rem;
+        font-size: 2.5rem;
+      }
+      .content-section p:first-of-type {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+        color: #e5e7eb;
       }
       .step-image {
         max-width: 100%;
@@ -74,7 +87,8 @@
       </div>
       <nav class="nav-links">
         <a href="{{ url_for('index') }}">Home</a>
-        <a href="#how-it-works">How it works</a>
+        <a href="{{ url_for('how_it_works') }}" class="active">How it works</a>
+        <a href="{{ url_for('about') }}">About</a>
         <a
           href="https://github.com/AliElneklawy/braille-translator"
           target="_blank"
