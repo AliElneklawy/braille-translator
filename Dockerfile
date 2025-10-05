@@ -1,28 +1,12 @@
-# FROM ghcr.io/astral-sh/uv:0.8.22-debian
+FROM python:3.10.13-slim
 
-# WORKDIR /app
-
-# COPY pyproject.toml .
-
-# RUN uv venv \
-#     && uv pip install .
-
-# COPY . .
-
-# EXPOSE 8000
-
-# CMD ["uvicorn", "src.webapp.app:app", "--host", "0.0.0.0", "--port", "8000"]
-
-
-FROM python:3.10.13-alpine
-
-RUN apt-get update && apt-get install --no-install-recommends -y \
+RUN apt-get update && apt-get install --no-install-recommends -y curl ca-certificates\
     build-essential && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-ADD https://astral.sh/uv/install.sh /install.sh
+ADD https://astral.sh/uv/install.sh /uv-installer.sh
 
-RUN chmod -R 755 /install.sh && /install.sh && rm /install.sh
+RUN sh /uv-installer.sh && rm /uv-installer.sh
 
 ENV PATH="/root/.local/bin:${PATH}"
 
@@ -38,4 +22,4 @@ COPY . .
 
 EXPOSE 8000
 
-CMD ["uvicorn", "src.webapp.app:app", "--port", "8000"]
+CMD ["uvicorn", "src.webapp.app:app", "--host", "0.0.0.0", "--port", "8000"]
