@@ -158,8 +158,7 @@ dependencies = [
     { name = "python-telegram-bot" },
     { name = "pyttsx3" },
     { name = "telepot" },
-    { name = "tensorflow" },
-    { name = "tensorflow-io-gcs-filesystem" },
+    { name = "tensorflow-cpu" },
     { name = "tqdm" },
     { name = "transformers" },
     { name = "uvicorn", extra = ["standard"] },
@@ -183,8 +182,7 @@ requires-dist = [
     { name = "python-telegram-bot", specifier = "==21.0.1" },
     { name = "pyttsx3", specifier = "==2.90" },
     { name = "telepot", specifier = "==12.7" },
-    { name = "tensorflow", specifier = "==2.16.1" },
-    { name = "tensorflow-io-gcs-filesystem", specifier = "==0.31.0" },
+    { name = "tensorflow-cpu", specifier = "==2.16.1" },
     { name = "tqdm", specifier = "==4.66.1" },
     { name = "transformers", specifier = "==4.37.2" },
     { name = "uvicorn", extras = ["standard"], specifier = "==0.30.1" },
@@ -3800,7 +3798,7 @@ wheels = [
 ]
 
 [[package]]
-name = "tensorflow"
+name = "tensorflow-cpu"
 version = "2.16.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
@@ -3828,11 +3826,9 @@ dependencies = [
     { name = "wrapt" },
 ]
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/4a/b7/134389cfd027b5c65758b5bd8c2ff06965e9cac8c4fba867e32fae8ddf32/tensorflow-2.16.1-cp310-cp310-macosx_10_15_x86_64.whl", hash = "sha256:ab79f156dd746c2dae906e3b4c5daac3855742941752e5a2c28f094c56eed466", size = 259544720 },
-    { url = "https://files.pythonhosted.org/packages/7d/01/bee34cf4d207cc5ae4f445c0e743691697cd89359a24a5fcdcfa8372f042/tensorflow-2.16.1-cp310-cp310-macosx_12_0_arm64.whl", hash = "sha256:8e376ab46fb1df18a1f927d77011d36ecf7b717a81cbfe4a941c7bf5236939b3", size = 226983538 },
-    { url = "https://files.pythonhosted.org/packages/7b/10/d3aede20df340f7e87bfaf8338de92fa2f9fc3908588bdbf0fb17a4fc0bf/tensorflow-2.16.1-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:ae0554471d472b8095f8a5204d878389d0d4bc88f6ef6edcd477b952dff5cfab", size = 218861813 },
-    { url = "https://files.pythonhosted.org/packages/a8/dc/e5797d6bf966cd3baa5a6ae32bec31472934c9021ca1505dc7bf5c8fc902/tensorflow-2.16.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:1e96047657c64459a36a0cc211a3d003df96c7be3f95a84f7b705715f5697270", size = 589789015 },
-    { url = "https://files.pythonhosted.org/packages/e2/46/a26598fab7da99dbe3a564f90cb4bba8de9ceb8943ff9180cd9789b5f6ea/tensorflow-2.16.1-cp310-cp310-win_amd64.whl", hash = "sha256:21a3c6d76a39f52754c389326f6bef8aef3c26b5bc89ca365add4a69483e569e", size = 2098 },
+    { url = "https://files.pythonhosted.org/packages/04/28/df5e50815663047d62eede8415e1df8b099d6f4d291534ac91038f9d4833/tensorflow_cpu-2.16.1-cp310-cp310-macosx_10_15_x86_64.whl", hash = "sha256:050f550a8a1aa77959826fd642024d527699a817cbf3e16c59773981c1fae0a2", size = 259544765 },
+    { url = "https://files.pythonhosted.org/packages/81/3c/c9052693d8f374b2f11dda13e0b4cd91a04e375bc86b27f4e91ea7ee6b1f/tensorflow_cpu-2.16.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:10daa2bda40c85f7b0ed8d036e6c0394fe24e1806bec0835b5331f8a451e182d", size = 214013229 },
+    { url = "https://files.pythonhosted.org/packages/f0/1f/9ca9b8488cc0170b36dfab39286cea5f5244685bea703e7f2684dad07657/tensorflow_cpu-2.16.1-cp310-cp310-win_amd64.whl", hash = "sha256:3c79d15e51aab9d9cbeb1b4dc13f2c83a80e63540162afc1ee8c66b89ceb123a", size = 2136 },
 ]
 
 [[package]]
