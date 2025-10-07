@@ -4,6 +4,7 @@ data/
 notebooks/
 utils/
 media/
+downloads/
 __pycache__/
 .ruff_cache/
 *.egg-info/
