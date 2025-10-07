@@ -64,6 +64,14 @@ class Settings(BaseSettings):
         default=True,
         description="Flag to enable or disable text-to-speech generation.",
     )
+    max_audio_age_hours: int = Field(
+        default=24,
+        description="Maximum age in hours before audio files are automatically deleted.",
+    )
+    cleanup_interval_hours: int = Field(
+        default=1,
+        description="Interval in hours between automatic cleanup of old files.",
+    )
 
     model_config = SettingsConfigDict(
         env_prefix="BRAILLE_",
@@ -86,7 +94,21 @@ def get_service() -> BrailleTranslatorService:
         media_root=MEDIA_DIR,
         enable_correction=settings.enable_spell_correction,
         enable_tts=settings.enable_tts,
+        max_audio_age_hours=settings.max_audio_age_hours,
+        cleanup_interval_hours=settings.cleanup_interval_hours,
     )
+
+
+@app.on_event("shutdown")
+async def cleanup_on_shutdown():
+    """Clean up all temporary files on application shutdown."""
+    try:
+        service = get_service()
+        # Force cleanup of all files, regardless of their age
+        service.cleanup_old_files(force=True)
+    except Exception:
+        # Log the error but don't prevent shutdown
+        pass
 
 
 @app.get("/how-it-works", response_class=HTMLResponse)
