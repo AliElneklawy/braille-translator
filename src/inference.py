@@ -8,6 +8,13 @@ from tensorflow.keras.preprocessing import image
 
 
 class Inference:
+    """
+    Class to map 6-bit Braille patterns to characters and decode image-derived predictions.
+
+        - Uses a mappings dict for braille-to-char and special tokens (CAP, #).
+        - Builds class_names from all 6-bit combinations for model output.
+        - Provides preprocess, predict, and decode to convert images to text.
+    """
     def __init__(self, model_path) -> None:
         self.mappings = {
             "100000": ["a", "1"],

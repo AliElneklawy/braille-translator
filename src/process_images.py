@@ -1,19 +1,28 @@
 import math
 import os
+import tempfile
+from uuid import uuid4
 
 import cv2
+import matplotlib
+
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image
 
 
 class ProcessImage:
-    def __init__(self, im_path=None, save_path=None) -> None:
+    def __init__(self, im_path=None, save_path=None, temp_dir=None) -> None:
         self.row_coordinates = []
         self.column_coordinates = []
         self.symbols_as_images = []
         self.im_path = im_path  # path to the scanned image
         self.save_path = save_path  # temp folder to save the cropped images
+        self.temp_dir = temp_dir or tempfile.gettempdir()
+        if not os.path.exists(self.temp_dir):
+            os.makedirs(self.temp_dir, exist_ok=True)
+        self._filtered_image_path = None
 
     def read_image_if_found(self, input_image):
         self.image = cv2.imread(input_image, cv2.IMREAD_GRAYSCALE)
@@ -38,17 +47,27 @@ class ProcessImage:
         ]  # cropping image to remove side line noise
         plt.imshow(self.filtered_image, "binary")
         plt.axis("off")  # Turn off the axis
+        self._filtered_image_path = os.path.join(
+            self.temp_dir, f"filtered_image_{uuid4().hex}.png"
+        )
         plt.savefig(
-            "filtered_image_B&W.png", bbox_inches="tight", pad_inches=0, dpi=400
+            self._filtered_image_path,
+            bbox_inches="tight",
+            pad_inches=0,
+            dpi=400,
         )  # Save the image without extra whitespace
         plt.close()  # Close the current figure
 
     def get_resolution_of_the_image(self):
-        self.paper_image = Image.open("filtered_image_B&W.png").convert("L")
+        if not self._filtered_image_path:
+            raise FileNotFoundError("Filtered image path not initialized.")
+        self.paper_image = Image.open(self._filtered_image_path).convert("L")
         try:
-            os.remove("filtered_image_B&W.png")
+            os.remove(self._filtered_image_path)
         except FileNotFoundError:
-            print("File 'filtered_image_B&W.png' not found.")
+            print(f"File '{self._filtered_image_path}' not found.")
+        finally:
+            self._filtered_image_path = None
         self.width, self.height = self.paper_image.size
 
     def convert_image_to_2D_array(
@@ -246,6 +265,7 @@ class ProcessImage:
         self.save_the_cropped_symbols()
 
     def divide_the_image_return_array_of_images(self):
+        self.symbols_as_images = []
         self.read_image_if_found(self.im_path)
         self.convert_image_to_black_and_white()
         self.filter_BW_image()

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About</title>
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', path='css/styles.css') }}"
+    />
+    <link rel="icon" href="{{ url_for('static', path='img/favicon.svg') }}" />
+    <style>
+      .content-section {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        backdrop-filter: blur(10px);
+        margin-bottom: 2rem;
+        color: #f3f4f6;
+      }
+      .team-section {
+        margin: 2rem 0;
+      }
+      .team-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-top: 1.5rem;
+      }
+      .team-card {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 1.5rem;
+        border-radius: 12px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .team-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      }
+      .team-role {
+        color: #818cf8;
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        border-bottom: 2px solid #4f46e5;
+        padding-bottom: 0.5rem;
+        display: inline-block;
+      }
+      .team-members {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .team-members li {
+        padding: 0.5rem 0;
+        font-size: 1.05rem;
+        color: #e5e7eb;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .team-members li:last-child {
+        border-bottom: none;
+      }
+      h1 {
+        color: #4f46e5;
+        font-size: 2.8rem;
+        margin-bottom: 2rem;
+        text-align: center;
+        position: relative;
+        padding-bottom: 1rem;
+      }
+      h1::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 4px;
+        background: linear-gradient(90deg, #4f46e5, #818cf8);
+        border-radius: 2px;
+      }
+      h2 {
+        color: #818cf8;
+        font-size: 2rem;
+        margin: 3rem 0 1.5rem;
+        position: relative;
+        padding-left: 1rem;
+        border-left: 4px solid #4f46e5;
+      }
+      .team-role {
+        color: #ffffff;
+        background-color: #4f46e5;
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin: 0 0 1.5rem 0;
+        padding: 0.6rem 1.2rem;
+        border-radius: 6px;
+        display: inline-block;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+      p {
+        color: #e5e7eb;
+        line-height: 1.8;
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+      }
+      .back-button {
+        display: inline-block;
+        margin-top: 2rem;
+        padding: 0.75rem 1.5rem;
+        background-color: #4f46e5;
+        color: white;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+      }
+      .back-button:hover {
+        background-color: #4338ca;
+      }
+      .highlight {
+        color: #818cf8;
+        font-weight: 500;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="background-gradient"></div>
+    <header class="page-header">
+      <div class="brand">
+        <img src="{{ url_for('static', path='img/logo.svg') }}" alt="Logo" />
+        <span>Braille Translator</span>
+      </div>
+      <nav class="nav-links">
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('how_it_works') }}">How it works</a>
+        <a href="#" class="active">About</a>
+        <a
+          href="https://github.com/AliElneklawy/braille-translator"
+          target="_blank"
+          rel="noopener"
+          >GitHub</a
+        >
+      </nav>
+    </header>
+
+    <main>
+      <section class="content-section">
+        <h1>About</h1>
+        
+        <div class="team-section">
+          <h2>Our Team</h2>
+          <div class="team-grid">
+            <div class="team-card">
+              <div class="team-role">Machine Learning Team</div>
+              <ul class="team-members">
+                <li>Ali Elneklawy</li>
+                <li>Nada Gamal El-Dien</li>
+                <li>Nada Tarek</li>
+              </ul>
+            </div>
+            
+            <div class="team-card">
+              <div class="team-role">Image Processing Team</div>
+              <ul class="team-members">
+                <li>Ayman Feteha</li>
+                <li>Abdallah Ashraf</li>
+                <li>Ahmed Abdalal</li>
+                <li>Adham Hedia</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-overview">
+          <h2>Project Overview</h2>
+          <p>This project represents our graduation work, focusing on developing an advanced system that bridges the gap between Braille literacy and digital accessibility. Our solution combines cutting-edge <span class="highlight">image processing</span> and <span class="highlight">deep learning</span> technologies to transform scanned Braille documents into accessible digital text.</p>
+          
+          <p>At its core, our system is designed to <span class="highlight">accurately interpret Grade 1 Braille</span> from scanned images, providing a reliable and efficient translation service. We've gone beyond simple text extraction by integrating <span class="highlight">text-to-speech</span> capabilities, enabling users to listen to the translated content.</p>
+          
+          <p>Key features of our project include:</p>
+          <ul class="team-members">
+            <li>High-accuracy Braille character recognition</li>
+            <li>Support for various image formats and qualities</li>
+            <li>Intuitive web interface for easy access</li>
+            <li>Optional audio output for enhanced accessibility</li>
+            <li>Spell correction for improved translation quality</li>
+          </ul>
+          
+          <p>Our mission is to create tools that empower individuals with visual impairments by making Braille content more accessible. This project represents a significant step toward breaking down barriers in information access and promoting digital inclusion.</p>
+        </div>
+
+        <a href="/" class="back-button">Back to Translator</a>
+      </section>
+    </main>
+
+    <footer class="page-footer">
+      <p>&copy; {{ current_year }} Braille Translator Team</p>
+    </footer>
+
+    <script src="{{ url_for('static', path='js/app.js') }}" defer></script>
+  </body>
+</html>
