@@ -22,6 +22,24 @@
 ## Overview
 This repository hosts our graduation project, focused on the development of a system that utilizes image processing and deep learning techniques to facilitate the translation of scanned Braille images into English text. Additionally, the system converts the extracted text into audible speech, enhancing accessibility for visually impaired individuals.
 
+## Image Specifications
+   For accurate translation, we recommend that you follow these standards (We don't guarantee good results if any of these standards are not met):
+   
+          Printer: INDEX BRAILLE Everest-D V5
+          Printed page size: 23cm x 33cm
+          Dot size: 2mm
+          Distance between 2 dots in the same symbol: 0.7mm
+          Distance between 2 rows: 3mm
+          Distance between 2 columns: 2mm
+          
+          Scanner: Canon PIXIMA TS3140
+          Scan settings:
+              Source: Flatbed
+              Color format: Grayscale
+              File type: JPG, PNG
+              Resolution (DPI): 100
+        
+
 ## Project Description
 This project aims to bridge the gap between Braille literacy and accessibility through the integration of cutting-edge technologies. Leveraging the power of image processing and deep learning, the system provides a robust solution capable of accurately interpreting Braille characters from scanned images.
 
